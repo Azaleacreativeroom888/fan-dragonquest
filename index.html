@@ -2,35 +2,461 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>ドラクエ非公式ファンサイト</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>勇者の手記 — DQ Fan Log</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #F0D080;
+      --deep: #0E0A04;
+      --parchment: #F5EDD6;
+      --parchment-dark: #E8D9B8;
+      --red: #8B1A1A;
+      --blue: #1A3A6B;
+      --text: #2C1A06;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Serif JP', serif;
+      background-color: var(--deep);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── HERO HEADER ── */
+    header {
+      position: relative;
+      background: var(--deep);
+      text-align: center;
+      padding: 60px 20px 40px;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,0.18) 0%, transparent 70%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23C9A84C' stroke-width='0.4' opacity='0.12'%3E%3Crect x='10' y='10' width='40' height='40'/%3E%3Crect x='5' y='5' width='50' height='50' rx='2'/%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .logo-crest {
+      font-size: 48px;
+      line-height: 1;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 0 16px rgba(201,168,76,0.6));
+      animation: crестglow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes crестglow {
+      from { filter: drop-shadow(0 0 10px rgba(201,168,76,0.4)); }
+      to   { filter: drop-shadow(0 0 28px rgba(201,168,76,0.9)); }
+    }
+
+    header h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(26px, 6vw, 52px);
+      font-weight: 900;
+      letter-spacing: 6px;
+      color: var(--gold-light);
+      text-shadow: 0 2px 0 #6b4800, 0 0 30px rgba(201,168,76,0.5);
+      position: relative;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      letter-spacing: 4px;
+      color: #9A8050;
+      margin-top: 6px;
+      text-transform: uppercase;
+    }
+
+    /* 装飾ライン */
+    .deco-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 20px auto;
+      max-width: 500px;
+    }
+    .deco-line::before,
+    .deco-line::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+    }
+    .deco-line span { color: var(--gold); font-size: 18px; }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    nav a {
+      color: var(--parchment);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 2px;
+      padding: 6px 18px;
+      border: 1px solid rgba(201,168,76,0.35);
+      border-radius: 2px;
+      transition: all 0.25s;
+      background: rgba(201,168,76,0.05);
+    }
+    nav a:hover {
+      background: var(--gold);
+      color: var(--deep);
+      border-color: var(--gold);
+    }
+
+    /* ── MAIN PARCHMENT AREA ── */
+    .parchment-wrap {
+      background: var(--parchment);
+      position: relative;
+    }
+    .parchment-wrap::before {
+      content: '';
+      display: block;
+      height: 24px;
+      background: linear-gradient(to bottom, var(--deep), var(--parchment));
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 30px 24px 60px;
+    }
+
+    /* ── INTRO ── */
+    .intro {
+      background: var(--parchment-dark);
+      border: 1px solid #C8B07A;
+      border-left: 5px solid var(--gold);
+      padding: 20px 24px;
+      margin-bottom: 40px;
+      border-radius: 2px;
+      font-size: 15px;
+      line-height: 2;
+      position: relative;
+      box-shadow: inset 0 0 40px rgba(201,168,76,0.08);
+    }
+    .intro::after {
+      content: '⚔';
+      position: absolute;
+      top: -14px;
+      left: 20px;
+      font-size: 22px;
+      background: var(--parchment-dark);
+      padding: 0 8px;
+      color: var(--gold);
+    }
+
+    /* ── SECTIONS ── */
+    .section {
+      margin-bottom: 44px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .section-header h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 18px;
+      letter-spacing: 3px;
+      color: var(--red);
+      text-transform: uppercase;
+    }
+    .section-header .badge {
+      font-size: 20px;
+    }
+    .section-rule {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, var(--gold), transparent);
+    }
+
+    /* ── POST CARDS ── */
+    .post {
+      margin-bottom: 12px;
+      padding: 14px 18px;
+      background: white;
+      border: 1px solid #D4BC88;
+      border-left: 4px solid var(--gold);
+      border-radius: 2px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 2px 2px 0 rgba(201,168,76,0.2);
+    }
+    .post:hover {
+      transform: translateX(4px);
+      box-shadow: 4px 4px 0 rgba(201,168,76,0.35);
+    }
+    .post-icon {
+      font-size: 22px;
+      line-height: 1;
+      margin-top: 2px;
+    }
+    .post a {
+      text-decoration: none;
+      color: var(--red);
+      font-weight: 700;
+      font-size: 15px;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .post a:hover { text-decoration: underline; }
+    .post p {
+      font-size: 13px;
+      color: #7A5C30;
+      line-height: 1.5;
+    }
+
+    /* ── GALLERY ── */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .gallery-item {
+      aspect-ratio: 1;
+      background: #D4BC88;
+      border: 2px solid #C8B07A;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .gallery-item:hover {
+      transform: scale(1.03);
+      border-color: var(--gold);
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .gallery-item .placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: #8A6E3A;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    .gallery-item .placeholder span { font-size: 34px; }
+
+    /* ── SERIES TRACKER ── */
+    .series-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .series-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: white;
+      border: 1px solid #D4BC88;
+      border-radius: 2px;
+      font-size: 14px;
+    }
+    .series-item .num {
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      color: #9A8050;
+      width: 28px;
+      text-align: center;
+      font-weight: 700;
+    }
+    .series-item .title-jp { color: var(--text); flex: 1; }
+    .series-item .star {
+      font-size: 16px;
+      color: #bbb;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .series-item .star.fav { color: var(--gold); }
+    .series-badge {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      letter-spacing: 1px;
+    }
+    .badge-clear { background: #d4edda; color: #276233; }
+    .badge-playing { background: #fff3cd; color: #856404; }
+    .badge-wish { background: #e8d9b8; color: #6c4a00; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--deep);
+      text-align: center;
+      padding: 28px 20px;
+      font-size: 12px;
+      color: #6A5030;
+      letter-spacing: 2px;
+      border-top: 1px solid rgba(201,168,76,0.2);
+    }
+    footer .footer-crest { font-size: 20px; margin-bottom: 6px; color: var(--gold); opacity: 0.5; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .gallery { grid-template-columns: repeat(2, 1fr); }
+      nav a { font-size: 12px; padding: 5px 12px; }
+    }
+  </style>
 </head>
 <body>
-  <h1>ドラクエが好き</h1>
 
-  <p>
-    ※このサイトは『ドラクエ』の非公式ファンサイトです。
-    原作者・出版社・公式とは一切関係ありません。
-  </p>
+<header>
+  <div class="logo-crest">🛡️</div>
+  <h1>勇者の手記</h1>
+  <p class="subtitle">Dragon Quest Fan Log</p>
+  <div class="deco-line"><span>✦</span></div>
+  <nav>
+    <a href="index.html">HOME</a>
+    <a href="blog.html">BLOG</a>
+    <a href="gallery.html">GALLERY</a>
+    <a href="about.html">ABOUT</a>
+  </nav>
+</header>
 
-  <h2>このサイトについて</h2>
-  <p>
-    ドラクエの感想や考察を、静かに書いていく個人サイトです。
-  </p>
+<div class="parchment-wrap">
+  <div class="container">
 
-  <h2>最初の記事</h2>
-  <ul>
-    <li><a href="dragonquwst1.html">ドラクエ１</a></li>
-    <li><a href="dragonquwst2.html">ドラクエ２</a></li>
-    <li><a href="dragonquwst3.html">ドラクエ３</a></li>
-    <li><a href="dragonquwst4.html">ドラクエ４</a></li>
-    <li><a href="dragonquwst5.html">ドラクエ５</a></li>
-    <li><a href="dragonquwst6.html">ドラクエ６</a></li>
-    <li><a href="dragonquwst7.html">ドラクエ７</a></li>
-    <li><a href="dragonquwst8.html">ドラクエ８</a></li>
-    <li><a href="dragonquwst9.html">ドラクエ９</a></li>
-    <li><a href="dragonquwst10.html">ドラクエ10</a></li>
-    <li><a href="dragonquwst11.html">ドラクエ11</a></li>
-  </ul>
+    <!-- INTRO -->
+    <div class="intro">
+      <p>
+        ドラゴンクエストのファンサイトです。<br>
+        正しい攻略情報とかじゃなくて、「このBGMやばい」「このセリフ10年経っても忘れられない」を大事にしてます。<br>
+        勇者も魔王も、好きなものを好きなだけ語る場所。
+      </p>
+    </div>
+
+    <!-- LATEST POSTS -->
+    <div class="section">
+      <div class="section-header">
+        <span class="badge">📜</span>
+        <h2>Latest Posts</h2>
+        <div class="section-rule"></div>
+      </div>
+
+      <div class="post">
+        <div class="post-icon">⚔️</div>
+        <div>
+          <a href="blog.html">DQ11のこのシーンで号泣した話</a>
+          <p>ネタバレあり。あの展開は反則だと思う。</p>
+        </div>
+      </div>
+
+      <div class="post">
+        <div class="post-icon">🎵</div>
+        <div>
+          <a href="blog.html">すぎやまこういち先生のBGMで特に好きな曲5選</a>
+          <p>選べなくて結局10曲になった。</p>
+        </div>
+      </div>
+
+      <div class="post">
+        <div class="post-icon">🐉</div>
+        <div>
+          <a href="blog.html">歴代ラスボスを勝手にランキングする</a>
+          <p>強さじゃなくて「好き度」のランキングです。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ILLUSTRATION GALLERY -->
+    <div class="section">
+      <div class="section-header">
+        <span class="badge">🎨</span>
+        <h2>Illustration</h2>
+        <div class="section-rule"></div>
+      </div>
+      <div class="gallery">
+        <div class="gallery-item">
+          <div class="placeholder"><span>🗡️</span>Illust 01</div>
+        </div>
+        <div class="gallery-item">
+          <div class="placeholder"><span>🏰</span>Illust 02</div>
+        </div>
+        <div class="gallery-item">
+          <div class="placeholder"><span>✨</span>Illust 03</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SERIES TRACKER -->
+    <div class="section">
+      <div class="section-header">
+        <span class="badge">📖</span>
+        <h2>Series Log</h2>
+        <div class="section-rule"></div>
+      </div>
+      <div class="series-list">
+        <div class="series-item">
+          <span class="num">I</span>
+          <span class="title-jp">ドラゴンクエスト</span>
+          <span class="series-badge badge-clear">クリア済</span>
+          <span class="star fav">★</span>
+        </div>
+        <div class="series-item">
+          <span class="num">III</span>
+          <span class="title-jp">ドラゴンクエストIII そして伝説へ…</span>
+          <span class="series-badge badge-clear">クリア済</span>
+          <span class="star fav">★</span>
+        </div>
+        <div class="series-item">
+          <span class="num">V</span>
+          <span class="title-jp">ドラゴンクエストV 天空の花嫁</span>
+          <span class="series-badge badge-clear">クリア済</span>
+          <span class="star fav">★</span>
+        </div>
+        <div class="series-item">
+          <span class="num">XI</span>
+          <span class="title-jp">ドラゴンクエストXI 過ぎ去りし時を求めて</span>
+          <span class="series-badge badge-playing">プレイ中</span>
+          <span class="star">★</span>
+        </div>
+        <div class="series-item">
+          <span class="num">XII</span>
+          <span class="title-jp">ドラゴンクエストXII 選ばれし運命の炎</span>
+          <span class="series-badge badge-wish">気になる</span>
+          <span class="star">★</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-crest">🛡️</div>
+  <p>© 勇者の手記 — Fan Log / Non-official</p>
+</footer>
+
 </body>
 </html>
