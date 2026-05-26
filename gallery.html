@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery — 勇者の手記</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #F0D080;
+      --deep: #0E0A04;
+      --parchment: #F5EDD6;
+      --parchment-dark: #E8D9B8;
+      --red: #8B1A1A;
+      --blue: #1A3A6B;
+      --text: #2C1A06;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Serif JP', serif;
+      background-color: var(--deep);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: relative;
+      background: var(--deep);
+      text-align: center;
+      padding: 60px 20px 40px;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,0.18) 0%, transparent 70%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23C9A84C' stroke-width='0.4' opacity='0.12'%3E%3Crect x='10' y='10' width='40' height='40'/%3E%3Crect x='5' y='5' width='50' height='50' rx='2'/%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .logo-crest {
+      font-size: 48px;
+      line-height: 1;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 0 16px rgba(201,168,76,0.6));
+      animation: crestglow 3s ease-in-out infinite alternate;
+    }
+    @keyframes crestglow {
+      from { filter: drop-shadow(0 0 10px rgba(201,168,76,0.4)); }
+      to   { filter: drop-shadow(0 0 28px rgba(201,168,76,0.9)); }
+    }
+    header h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(22px, 5vw, 44px);
+      font-weight: 900;
+      letter-spacing: 6px;
+      color: var(--gold-light);
+      text-shadow: 0 2px 0 #6b4800, 0 0 30px rgba(201,168,76,0.5);
+    }
+    .subtitle {
+      font-size: 13px;
+      letter-spacing: 4px;
+      color: #9A8050;
+      margin-top: 6px;
+      text-transform: uppercase;
+    }
+    .deco-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 20px auto;
+      max-width: 500px;
+    }
+    .deco-line::before, .deco-line::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+    }
+    .deco-line span { color: var(--gold); font-size: 18px; }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    nav a {
+      color: var(--parchment);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 2px;
+      padding: 6px 18px;
+      border: 1px solid rgba(201,168,76,0.35);
+      border-radius: 2px;
+      transition: all 0.25s;
+      background: rgba(201,168,76,0.05);
+    }
+    nav a:hover, nav a.active {
+      background: var(--gold);
+      color: var(--deep);
+      border-color: var(--gold);
+    }
+
+    /* ── PARCHMENT ── */
+    .parchment-wrap {
+      background: var(--parchment);
+    }
+    .parchment-wrap::before {
+      content: '';
+      display: block;
+      height: 24px;
+      background: linear-gradient(to bottom, var(--deep), var(--parchment));
+    }
+
+    .container {
+      max-width: 960px;
+      margin: auto;
+      padding: 30px 24px 60px;
+    }
+
+    /* ── FILTER TABS ── */
+    .filter-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .filter-label {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: #9A8050;
+      text-transform: uppercase;
+      margin-right: 4px;
+    }
+    .filter-btn {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 12px;
+      padding: 5px 16px;
+      border: 1.5px solid #C8B07A;
+      border-radius: 2px;
+      background: white;
+      color: var(--text);
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.1);
+    }
+    .filter-btn.active {
+      background: var(--gold);
+      border-color: #a07828;
+      color: var(--deep);
+      font-weight: 700;
+    }
+
+    /* ── SECTION HEADER ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .section-header h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      letter-spacing: 3px;
+      color: var(--red);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .section-rule {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, var(--gold), transparent);
+    }
+    .section-block { margin-bottom: 44px; }
+
+    /* ── GRID ── */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    /* ── CARD (イラスト) ── */
+    .card {
+      border: 2px solid #C8B07A;
+      border-radius: 3px;
+      overflow: hidden;
+      background: white;
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+      box-shadow: 3px 3px 0 rgba(201,168,76,0.25);
+    }
+    .card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 rgba(201,168,76,0.5);
+      border-color: var(--gold);
+    }
+    .card-img {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      display: block;
+      background: var(--parchment-dark);
+    }
+    /* 画像がないときのプレースホルダー */
+    .card-placeholder {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: var(--parchment-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #9A8050;
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+    .card-placeholder .ph-icon { font-size: 32px; }
+    .card-meta {
+      padding: 10px 12px;
+      border-top: 1px solid #E0CC9A;
+    }
+    .card-tag {
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #7A5C30;
+      background: var(--parchment-dark);
+      border: 1px solid #C8B07A;
+      padding: 1px 6px;
+      border-radius: 2px;
+      display: inline-block;
+      margin-bottom: 4px;
+    }
+    .card-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    /* ── MANGA CARD (横長・作品単位) ── */
+    .manga-card {
+      border: 2px solid #C8B07A;
+      border-radius: 3px;
+      overflow: hidden;
+      background: white;
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+      box-shadow: 3px 3px 0 rgba(201,168,76,0.25);
+    }
+    .manga-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 rgba(201,168,76,0.5);
+      border-color: var(--gold);
+    }
+    .manga-preview {
+      display: flex;
+      gap: 3px;
+      background: #1a0f04;
+      padding: 3px;
+    }
+    .manga-preview .thumb {
+      flex: 1;
+      aspect-ratio: 3/4;
+      background: var(--parchment-dark);
+      object-fit: cover;
+      display: block;
+    }
+    .manga-preview .thumb-placeholder {
+      flex: 1;
+      aspect-ratio: 3/4;
+      background: var(--parchment-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9A8050;
+      font-size: 10px;
+    }
+    .manga-info {
+      padding: 12px 14px;
+      border-top: 1px solid #E0CC9A;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .manga-info-left { flex: 1; }
+    .manga-tag {
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--red);
+      background: #fde8e8;
+      border: 1px solid #e0a0a0;
+      padding: 1px 6px;
+      border-radius: 2px;
+      display: inline-block;
+      margin-bottom: 5px;
+    }
+    .manga-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+    .manga-desc {
+      font-size: 11px;
+      color: #7A5C30;
+      line-height: 1.5;
+    }
+    .manga-page-count {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      color: #9A8050;
+      white-space: nowrap;
+      padding-top: 2px;
+    }
+
+    /* ── MANGA GRID (2col) ── */
+    .manga-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(14,10,4,0.92);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .lightbox.open { display: flex; }
+
+    .lightbox-inner {
+      position: relative;
+      max-width: 860px;
+      width: 100%;
+      background: var(--parchment);
+      border: 2px solid var(--gold);
+      border-radius: 4px;
+      box-shadow: 0 0 60px rgba(201,168,76,0.3);
+      overflow: hidden;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .lb-header {
+      background: var(--deep);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      border-bottom: 1px solid rgba(201,168,76,0.3);
+    }
+    .lb-title {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+      color: var(--gold-light);
+    }
+    .lb-close {
+      background: none;
+      border: 1px solid rgba(201,168,76,0.4);
+      color: var(--gold);
+      font-size: 18px;
+      width: 32px;
+      height: 32px;
+      border-radius: 2px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lb-close:hover { background: rgba(201,168,76,0.15); }
+
+    /* イラスト表示エリア */
+    .lb-img-wrap {
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #1a0f04;
+      min-height: 0;
+    }
+    .lb-img-wrap img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .lb-img-placeholder {
+      width: 100%;
+      aspect-ratio: 3/4;
+      max-height: 60vh;
+      background: var(--parchment-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: #9A8050;
+      font-size: 13px;
+    }
+    .lb-img-placeholder .ph-icon { font-size: 48px; }
+
+    /* 漫画ページビューア */
+    .lb-manga-viewer {
+      flex: 1;
+      overflow-y: auto;
+      background: #1a0f04;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 0;
+    }
+    .lb-manga-viewer .page-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .lb-manga-viewer .page-label {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: rgba(201,168,76,0.4);
+      margin-bottom: 4px;
+    }
+    .lb-manga-viewer .page-img {
+      max-width: 560px;
+      width: 100%;
+      border: 1px solid rgba(201,168,76,0.2);
+    }
+    .lb-manga-viewer .page-placeholder {
+      max-width: 560px;
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: var(--parchment-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9A8050;
+      font-size: 13px;
+      border: 1px solid rgba(201,168,76,0.2);
+    }
+
+    .lb-footer {
+      background: var(--deep);
+      padding: 10px 16px;
+      border-top: 1px solid rgba(201,168,76,0.2);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .lb-meta { font-size: 11px; color: #6A5030; letter-spacing: 1px; }
+    .lb-nav { display: flex; gap: 6px; }
+    .lb-nav-btn {
+      background: none;
+      border: 1px solid rgba(201,168,76,0.35);
+      color: var(--gold);
+      font-size: 13px;
+      padding: 4px 14px;
+      border-radius: 2px;
+      cursor: pointer;
+      font-family: 'Noto Serif JP', serif;
+      transition: background 0.2s;
+    }
+    .lb-nav-btn:hover { background: rgba(201,168,76,0.15); }
+    .lb-nav-btn:disabled { opacity: 0.3; cursor: default; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--deep);
+      text-align: center;
+      padding: 28px 20px;
+      font-size: 12px;
+      color: #6A5030;
+      letter-spacing: 2px;
+      border-top: 1px solid rgba(201,168,76,0.2);
+    }
+    footer .footer-crest { font-size: 20px; margin-bottom: 6px; color: var(--gold); opacity: 0.5; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 680px) {
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .manga-grid { grid-template-columns: 1fr; }
+      nav a { font-size: 12px; padding: 5px 12px; }
+    }
+    @media (max-width: 420px) {
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-crest">🛡️</div>
+  <h1>Gallery</h1>
+  <p class="subtitle">勇者の手記 — Illustrations & Manga</p>
+  <div class="deco-line"><span>✦</span></div>
+  <nav>
+    <a href="index.html">HOME</a>
+    <a href="blog.html">BLOG</a>
+    <a href="gallery.html" class="active">GALLERY</a>
+    <a href="about.html">ABOUT</a>
+  </nav>
+</header>
+
+<div class="parchment-wrap">
+  <div class="container">
+
+    <!-- FILTER -->
+    <div class="filter-row">
+      <span class="filter-label">Filter ▸</span>
+      <button class="filter-btn active" data-filter="all">すべて</button>
+      <button class="filter-btn" data-filter="manga">漫画</button>
+      <button class="filter-btn" data-filter="illust">イラスト</button>
+    </div>
+
+    <!-- ── 漫画セクション ── -->
+    <div class="section-block" id="sec-manga">
+      <div class="section-header">
+        <span>📖</span>
+        <h2>Manga</h2>
+        <div class="section-rule"></div>
+      </div>
+
+      <div class="manga-grid">
+
+        <!-- 作品1 -->
+        <div class="manga-card"
+          data-type="manga"
+          data-title="スライムと勇者"
+          data-pages='["manga/work1/p01.jpg","manga/work1/p02.jpg","manga/work1/p03.jpg","manga/work1/p04.jpg"]'
+          data-desc="4ページ / 2026年5月"
+          onclick="openManga(this)">
+          <div class="manga-preview">
+            <div class="thumb-placeholder">P1</div>
+            <div class="thumb-placeholder">P2</div>
+            <div class="thumb-placeholder">P3</div>
+            <div class="thumb-placeholder">P4</div>
+          </div>
+          <div class="manga-info">
+            <div class="manga-info-left">
+              <span class="manga-tag">漫画 · 4P</span>
+              <div class="manga-title">スライムと勇者</div>
+              <div class="manga-desc">はじめての4ページ漫画。</div>
+            </div>
+            <div class="manga-page-count">▶ 読む</div>
+          </div>
+        </div>
+
+        <!-- 作品2（追加用テンプレ） -->
+        <div class="manga-card"
+          data-type="manga"
+          data-title="8ページ漫画（準備中）"
+          data-pages='[]'
+          data-desc="制作中"
+          onclick="openManga(this)">
+          <div class="manga-preview">
+            <div class="thumb-placeholder">近日</div>
+            <div class="thumb-placeholder">公開</div>
+            <div class="thumb-placeholder">予定</div>
+            <div class="thumb-placeholder">✦</div>
+          </div>
+          <div class="manga-info">
+            <div class="manga-info-left">
+              <span class="manga-tag">漫画 · 制作中</span>
+              <div class="manga-title">8ページ漫画（タイトル未定）</div>
+              <div class="manga-desc">ストーリー構想中。</div>
+            </div>
+            <div class="manga-page-count">準備中</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── イラストセクション ── -->
+    <div class="section-block" id="sec-illust">
+      <div class="section-header">
+        <span>🎨</span>
+        <h2>Illustration</h2>
+        <div class="section-rule"></div>
+      </div>
+
+      <div class="gallery-grid">
+
+        <!-- イラスト1 -->
+        <div class="card"
+          data-type="illust"
+          data-title="スライム"
+          data-src="illust/slime.jpg"
+          data-tag="ファンアート"
+          onclick="openIllust(this)">
+          <div class="card-placeholder">
+            <span class="ph-icon">🟦</span>
+            <span>illust/slime.jpg</span>
+          </div>
+          <div class="card-meta">
+            <span class="card-tag">ファンアート</span>
+            <div class="card-title">スライム</div>
+          </div>
+        </div>
+
+        <!-- イラスト2 -->
+        <div class="card"
+          data-type="illust"
+          data-title="勇者（落書き）"
+          data-src="illust/hero_sketch.jpg"
+          data-tag="スケッチ"
+          onclick="openIllust(this)">
+          <div class="card-placeholder">
+            <span class="ph-icon">🗡️</span>
+            <span>illust/hero_sketch.jpg</span>
+          </div>
+          <div class="card-meta">
+            <span class="card-tag">スケッチ</span>
+            <div class="card-title">勇者（落書き）</div>
+          </div>
+        </div>
+
+        <!-- イラスト3 -->
+        <div class="card"
+          data-type="illust"
+          data-title="ドラゴン"
+          data-src="illust/dragon.jpg"
+          data-tag="ファンアート"
+          onclick="openIllust(this)">
+          <div class="card-placeholder">
+            <span class="ph-icon">🐉</span>
+            <span>illust/dragon.jpg</span>
+          </div>
+          <div class="card-meta">
+            <span class="card-tag">ファンアート</span>
+            <div class="card-title">ドラゴン</div>
+          </div>
+        </div>
+
+        <!-- イラスト追加用テンプレ（コピペで増やす） -->
+        <!--
+        <div class="card"
+          data-type="illust"
+          data-title="タイトル"
+          data-src="illust/ファイル名.jpg"
+          data-tag="タグ"
+          onclick="openIllust(this)">
+          <img class="card-img" src="illust/ファイル名.jpg" alt="タイトル">
+          <div class="card-meta">
+            <span class="card-tag">タグ</span>
+            <div class="card-title">タイトル</div>
+          </div>
+        </div>
+        -->
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-crest">🛡️</div>
+  <p>© 勇者の手記 — Fan Log / Non-official</p>
+</footer>
+
+<!-- ── LIGHTBOX ── -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner" id="lb-inner">
+
+    <div class="lb-header">
+      <span class="lb-title" id="lb-title">—</span>
+      <button class="lb-close" onclick="closeLightbox()">✕</button>
+    </div>
+
+    <!-- イラスト用 -->
+    <div class="lb-img-wrap" id="lb-img-wrap" style="display:none;">
+      <div class="lb-img-placeholder" id="lb-placeholder">
+        <span class="ph-icon">🖼️</span>
+        <span id="lb-src-hint"></span>
+      </div>
+      <img id="lb-img" src="" alt="" style="display:none;" onerror="showPlaceholder()">
+    </div>
+
+    <!-- 漫画用 -->
+    <div class="lb-manga-viewer" id="lb-manga-viewer" style="display:none;"></div>
+
+    <div class="lb-footer">
+      <span class="lb-meta" id="lb-meta"></span>
+      <div class="lb-nav" id="lb-nav" style="display:none;">
+        <button class="lb-nav-btn" id="lb-prev" onclick="navIllust(-1)">◀ 前へ</button>
+        <button class="lb-nav-btn" id="lb-next" onclick="navIllust(1)">次へ ▶</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // ── FILTER ──
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      document.getElementById('sec-manga').style.display  = (f === 'illust') ? 'none' : '';
+      document.getElementById('sec-illust').style.display = (f 
