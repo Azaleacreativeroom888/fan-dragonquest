@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>冒険の記録 — 勇者の手記</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #F0D080;
+      --deep: #0E0A04;
+      --parchment: #F5EDD6;
+      --parchment-dark: #E8D9B8;
+      --red: #8B1A1A;
+      --blue: #1A3A6B;
+      --text: #2C1A06;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Serif JP', serif;
+      background-color: var(--deep);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER (index.htmlと同じ) ── */
+    header {
+      position: relative;
+      background: var(--deep);
+      text-align: center;
+      padding: 60px 20px 40px;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,0.18) 0%, transparent 70%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23C9A84C' stroke-width='0.4' opacity='0.12'%3E%3Crect x='10' y='10' width='40' height='40'/%3E%3Crect x='5' y='5' width='50' height='50' rx='2'/%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .logo-crest {
+      font-size: 48px;
+      line-height: 1;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 0 16px rgba(201,168,76,0.6));
+      animation: crestglow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes crestglow {
+      from { filter: drop-shadow(0 0 10px rgba(201,168,76,0.4)); }
+      to   { filter: drop-shadow(0 0 28px rgba(201,168,76,0.9)); }
+    }
+
+    header h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(22px, 5vw, 44px);
+      font-weight: 900;
+      letter-spacing: 6px;
+      color: var(--gold-light);
+      text-shadow: 0 2px 0 #6b4800, 0 0 30px rgba(201,168,76,0.5);
+      position: relative;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      letter-spacing: 4px;
+      color: #9A8050;
+      margin-top: 6px;
+      text-transform: uppercase;
+    }
+
+    .deco-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 20px auto;
+      max-width: 500px;
+    }
+    .deco-line::before,
+    .deco-line::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+    }
+    .deco-line span { color: var(--gold); font-size: 18px; }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    nav a {
+      color: var(--parchment);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 2px;
+      padding: 6px 18px;
+      border: 1px solid rgba(201,168,76,0.35);
+      border-radius: 2px;
+      transition: all 0.25s;
+      background: rgba(201,168,76,0.05);
+    }
+    nav a:hover, nav a.active {
+      background: var(--gold);
+      color: var(--deep);
+      border-color: var(--gold);
+    }
+
+    /* ── PARCHMENT ── */
+    .parchment-wrap {
+      background: var(--parchment);
+      position: relative;
+    }
+    .parchment-wrap::before {
+      content: '';
+      display: block;
+      height: 24px;
+      background: linear-gradient(to bottom, var(--deep), var(--parchment));
+    }
+
+    .container {
+      max-width: 680px;
+      margin: auto;
+      padding: 30px 24px 60px;
+    }
+
+    /* ── SECTION HEADER ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .section-header h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 18px;
+      letter-spacing: 3px;
+      color: var(--red);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .section-rule {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, var(--gold), transparent);
+    }
+
+    /* ── ENTRY LIST ── */
+    .entry-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* 月グループ */
+    .month-group {
+      margin-bottom: 32px;
+    }
+
+    .month-label {
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      letter-spacing: 3px;
+      color: #9A8050;
+      text-transform: uppercase;
+      padding: 0 0 8px 4px;
+      border-bottom: 1px solid rgba(201,168,76,0.4);
+      margin-bottom: 14px;
+    }
+
+    /* 一言エントリ */
+    .entry {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 12px 14px;
+      border-radius: 3px;
+      transition: background 0.15s;
+      position: relative;
+    }
+
+    .entry:hover {
+      background: rgba(201,168,76,0.12);
+    }
+
+    /* 左の縦線 */
+    .entry + .entry::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 36px;
+      width: 1px;
+      height: 1px;
+      background: rgba(201,168,76,0.3);
+    }
+
+    .entry-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 44px;
+      gap: 4px;
+    }
+
+    .entry-icon {
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .entry-day {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      color: #9A8050;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    .entry-content {
+      flex: 1;
+      padding-top: 2px;
+    }
+
+    .entry-tag {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      background: var(--parchment-dark);
+      color: #7A5C30;
+      border: 1px solid #C8B07A;
+      padding: 1px 7px;
+      border-radius: 2px;
+      margin-bottom: 5px;
+    }
+
+    .entry-text {
+      font-size: 14px;
+      line-height: 1.85;
+      color: var(--text);
+    }
+
+    /* 区切り */
+    .entry-divider {
+      width: 100%;
+      height: 1px;
+      background: rgba(201,168,76,0.2);
+      margin: 2px 0;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--deep);
+      text-align: center;
+      padding: 28px 20px;
+      font-size: 12px;
+      color: #6A5030;
+      letter-spacing: 2px;
+      border-top: 1px solid rgba(201,168,76,0.2);
+    }
+    footer .footer-crest { font-size: 20px; margin-bottom: 6px; color: var(--gold); opacity: 0.5; }
+
+    @media (max-width: 600px) {
+      nav a { font-size: 12px; padding: 5px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-crest">🛡️</div>
+  <h1>冒険の記録</h1>
+  <p class="subtitle">Blog — 勇者の手記</p>
+  <div class="deco-line"><span>✦</span></div>
+  <nav>
+    <a href="index.html">HOME</a>
+    <a href="blog.html" class="active">BLOG</a>
+    <a href="gallery.html">GALLERY</a>
+    <a href="about.html">ABOUT</a>
+  </nav>
+</header>
+
+<div class="parchment-wrap">
+  <div class="container">
+
+    <div class="section-header">
+      <span>📜</span>
+      <h2>Battle Log</h2>
+      <div class="section-rule"></div>
+    </div>
+
+    <!-- 2026年5月 -->
+    <div class="month-group">
+      <div class="month-label">⚔ 2026 · May</div>
+
+      <div class="entry-list">
+
+        <div class="entry">
+          <div class="entry-left">
+            <span class="entry-icon">📖</span>
+            <span class="entry-day">05·26</span>
+          </div>
+          <div class="entry-content">
+            <span class="entry-tag">感想</span>
+            <p class="entry-text">鳥嶋和彦のラジオチャンネルでアベルのアニメの話をしてて、堀井雄二がキャラ名を考えて、キャラデザは鳥山明が考えていたらしい。</p>
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-left">
+            <span class="entry-icon">🐉</span>
+            <span class="entry-day">05·18</span>
+          </div>
+          <div class="entry-content">
+            <span class="entry-tag">感想</span>
+            <p class="entry-text">DQ11の「過ぎ去りし時を求めて」ルート、何度やっても泣く。</p>
+          </div>
+        </div>
+
+        <div class="entry-divider"></div>
+
+        <div class="entry">
+          <div class="entry-left">
+            <span class="entry-icon">🎵</span>
+            <span class="entry-day">05·15</span>
+          </div>
+          <div class="entry-content">
+            <span class="entry-tag">BGM</span>
+            <p class="entry-text">フィールド曲だけで旅した気分になれる。すぎやま先生ありがとう。</p>
+          </div>
+        </div>
+
+        <div class="entry-divider"></div>
+
+        <div class="entry">
+          <div class="entry-left">
+            <span class="entry-icon">⚔️</span>
+            <span class="entry-day">05·14</span>
+          </div>
+          <div class="entry-content">
+            <span class="entry-tag">雑記</span>
+            <p class="entry-text">メタル系を狩るためだけに1時間費やした。効率悪いのは分かってる。</p>
+          </div>
+        </div>
+
+        <div class="entry-divider"></div>
+
+        <div class="entry">
+          <div class="entry-left">
+            <span class="entry-icon">🏰</span>
+            <span class="entry-day">05·10</span>
+          </div>
+          <div class="entry-content">
+            <span class="entry-tag">考察</span>
+            <p class="entry-text">ロトの血筋ってどう繋がってるのか、未だに整理できていない。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 2026年4月 -->
+    <div class="month-group">
+      <div class="month-label">⚔ 2026 · April</div>
+
+      <div class="entry-list">
+
+        <div class="entry">
+          <div class="entry-left">
+            <span class="entry-icon">✨</span>
+            <span class="entry-day">04·28</span>
+          </div>
+          <div class="entry-content">
+            <span class="entry-tag">ファンアート</span>
+            <p class="entry-text">スライムだけ描いた。あの丸みが難しい。</p>
+          </div>
+        </div>
+
+        <div class="entry-divider"></div>
+
+        <div class="entry">
+          <div class="entry-left">
+            <span class="entry-icon">💀</span>
+            <span class="entry-day">04·22</span>
+          </div>
+          <div class="entry-content">
+            <span class="entry-tag">ボス</span>
+            <p class="entry-text">ゾーマ戦、光の玉なしで挑んだ。3回全滅した。</p>
+          </div>
+        </div>
+
+        <div class="entry-divider"></div>
+
+        <div class="entry">
+          <div class="entry-left">
+            <span class="entry-icon">📖</span>
+            <span class="entry-day">04·21</span>
+          </div>
+          <div class="entry-content">
+            <span class="entry-tag">セリフ</span>
+            <p class="entry-text">「そなたは　まことの　勇者じゃ」— このセリフで毎回やられる。</p>
+          </div>
+        </div>
+
+        <div class="entry-divider"></div>
+
+        <div class="entry">
+          <div class="entry-left">
+            <span class="entry-icon">🗡️</span>
+            <span class="entry-day">04·20</span>
+          </div>
+          <div class="entry-content">
+            <span class="entry-tag">装備</span>
+            <p class="entry-text">はぐれメタルの鎧を初めて手に入れた。テンションが上がりすぎた。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 2026年3月 -->
+    <div class="month-group">
+      <div class="month-label">⚔ 2026 · March</div>
+
+      <div class="entry-list">
+
+        <div class="entry">
+          <div class="entry-left">
+            <span class="entry-icon">🎮</span>
+            <span class="entry-day">03·30</span>
+          </div>
+          <div class="entry-content">
+            <span class="entry-tag">雑記</span>
+            <p class="entry-text">DQ5、嫁選びは今も迷う。何回やっても同じところで止まる。</p>
+          </div>
+        </div>
+
+        <div class="entry-divider"></div>
+
+        <div class="entry">
+          <div class="entry-left">
+            <span class="entry-icon">🌙</span>
+            <span class="entry-day">03·15</span>
+          </div>
+          <div class="entry-content">
+            <span class="entry-tag">思い出</span>
+            <p class="entry-text">小学生のとき、初めてクリアしたのがDQ3。あのエンディングは忘れられない。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-crest">🛡️</div>
+  <p>© 勇者の手記 — Fan Log / Non-official</p>
+</footer>
+
+</body>
+</html>
