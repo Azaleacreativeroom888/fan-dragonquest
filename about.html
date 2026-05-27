@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — 勇者の手記</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #F0D080;
+      --deep: #0E0A04;
+      --parchment: #F5EDD6;
+      --parchment-dark: #E8D9B8;
+      --red: #8B1A1A;
+      --text: #2C1A06;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Serif JP', serif;
+      background-color: var(--deep);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: relative;
+      background: var(--deep);
+      text-align: center;
+      padding: 60px 20px 40px;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,0.18) 0%, transparent 70%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23C9A84C' stroke-width='0.4' opacity='0.12'%3E%3Crect x='10' y='10' width='40' height='40'/%3E%3Crect x='5' y='5' width='50' height='50' rx='2'/%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .logo-crest {
+      font-size: 48px;
+      line-height: 1;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 0 16px rgba(201,168,76,0.6));
+      animation: crestglow 3s ease-in-out infinite alternate;
+    }
+    @keyframes crestglow {
+      from { filter: drop-shadow(0 0 10px rgba(201,168,76,0.4)); }
+      to   { filter: drop-shadow(0 0 28px rgba(201,168,76,0.9)); }
+    }
+    header h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(22px, 5vw, 44px);
+      font-weight: 900;
+      letter-spacing: 6px;
+      color: var(--gold-light);
+      text-shadow: 0 2px 0 #6b4800, 0 0 30px rgba(201,168,76,0.5);
+    }
+    .subtitle {
+      font-size: 13px;
+      letter-spacing: 4px;
+      color: #9A8050;
+      margin-top: 6px;
+      text-transform: uppercase;
+    }
+    .deco-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 20px auto;
+      max-width: 500px;
+    }
+    .deco-line::before, .deco-line::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+    }
+    .deco-line span { color: var(--gold); font-size: 18px; }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    nav a {
+      color: var(--parchment);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 2px;
+      padding: 6px 18px;
+      border: 1px solid rgba(201,168,76,0.35);
+      border-radius: 2px;
+      transition: all 0.25s;
+      background: rgba(201,168,76,0.05);
+    }
+    nav a:hover, nav a.active {
+      background: var(--gold);
+      color: var(--deep);
+      border-color: var(--gold);
+    }
+
+    /* ── PARCHMENT ── */
+    .parchment-wrap {
+      background: var(--parchment);
+    }
+    .parchment-wrap::before {
+      content: '';
+      display: block;
+      height: 24px;
+      background: linear-gradient(to bottom, var(--deep), var(--parchment));
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 30px 24px 60px;
+    }
+
+    /* ── SECTION HEADER ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .section-header h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      letter-spacing: 3px;
+      color: var(--red);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .section-rule {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, var(--gold), transparent);
+    }
+    .section-block { margin-bottom: 48px; }
+
+    /* ── ABOUT CARD ── */
+    .about-card {
+      background: white;
+      border: 1px solid #C8B07A;
+      border-left: 5px solid var(--gold);
+      border-radius: 3px;
+      padding: 28px 28px 24px;
+      box-shadow: 3px 3px 0 rgba(201,168,76,0.2);
+      position: relative;
+    }
+
+    .site-title-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .site-icon { font-size: 36px; }
+    .site-name-block { flex: 1; }
+    .site-name {
+      font-family: 'Cinzel', serif;
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--text);
+      letter-spacing: 2px;
+    }
+    .site-name-sub {
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: #9A8050;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .about-desc {
+      font-size: 14px;
+      line-height: 2.1;
+      color: #4a2c10;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #E0CC9A;
+      padding-bottom: 18px;
+    }
+
+    /* スペックテーブル */
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .spec-table tr {
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+    }
+    .spec-table tr:last-child { border-bottom: none; }
+    .spec-table th {
+      text-align: left;
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: #9A8050;
+      text-transform: uppercase;
+      padding: 8px 16px 8px 0;
+      white-space: nowrap;
+      vertical-align: top;
+      width: 110px;
+    }
+    .spec-table td {
+      color: var(--text);
+      padding: 8px 0;
+      line-height: 1.7;
+    }
+    .spec-tag {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 1px;
+      background: var(--parchment-dark);
+      border: 1px solid #C8B07A;
+      color: #7A5C30;
+      padding: 1px 8px;
+      border-radius: 2px;
+      margin: 2px 3px 2px 0;
+    }
+
+    /* ── NOTICE BOX ── */
+    .notice-box {
+      background: #fff8ee;
+      border: 1px solid #D4BC88;
+      border-left: 4px solid var(--red);
+      border-radius: 2px;
+      padding: 14px 18px;
+      font-size: 12px;
+      line-height: 1.9;
+      color: #6A3020;
+    }
+    .notice-box strong {
+      display: block;
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--red);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    /* ── LINK GRID ── */
+    .link-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .link-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      background: white;
+      border: 1px solid #C8B07A;
+      border-left: 4px solid var(--gold);
+      border-radius: 3px;
+      padding: 14px 16px;
+      transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+      box-shadow: 2px 2px 0 rgba(201,168,76,0.2);
+    }
+    .link-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 4px 4px 0 rgba(201,168,76,0.4);
+      border-color: var(--gold);
+    }
+    .link-icon {
+      font-size: 22px;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--parchment-dark);
+      border: 1px solid #C8B07A;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    .link-text { flex: 1; min-width: 0; }
+    .link-name {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .link-desc {
+      display: block;
+      font-size: 11px;
+      color: #9A8050;
+      line-height: 1.4;
+    }
+    .link-arrow {
+      font-size: 16px;
+      color: rgba(201,168,76,0.5);
+      flex-shrink: 0;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .link-card:hover .link-arrow {
+      color: var(--gold);
+      transform: translateX(3px);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--deep);
+      text-align: center;
+      padding: 28px 20px;
+      font-size: 12px;
+      color: #6A5030;
+      letter-spacing: 2px;
+      border-top: 1px solid rgba(201,168,76,0.2);
+      line-height: 2;
+    }
+    footer .footer-crest { font-size: 20px; margin-bottom: 6px; color: var(--gold); opacity: 0.5; }
+    footer .footer-notice {
+      font-size: 11px;
+      color: #4A3820;
+      max-width: 600px;
+      margin: 12px auto 0;
+      line-height: 1.9;
+    }
+
+    /* ── CONTACT FORM ── */
+    .form-card {
+      background: white;
+      border: 1px solid #C8B07A;
+      border-left: 5px solid var(--gold);
+      border-radius: 3px;
+      padding: 24px 28px;
+      box-shadow: 3px 3px 0 rgba(201,168,76,0.2);
+    }
+    .form-intro {
+      font-size: 13px;
+      color: #7A5C30;
+      line-height: 1.9;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #E0CC9A;
+    }
+    .form-group { margin-bottom: 16px; }
+    .form-label {
+      display: block;
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: #9A8050;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .required { color: var(--red); }
+    .form-input,
+    .form-textarea {
+      width: 100%;
+      background: var(--parchment);
+      border: 1px solid #C8B07A;
+      border-radius: 2px;
+      color: var(--text);
+      font-family: 'Noto Serif JP', serif;
+      font-size: 14px;
+      padding: 10px 14px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    .form-input::placeholder,
+    .form-textarea::placeholder { color: #BCA878; }
+    .form-input:focus,
+    .form-textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.12);
+    }
+    .form-textarea { resize: vertical; min-height: 130px; }
+    .form-submit {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--deep);
+      border: 1px solid var(--gold);
+      border-radius: 2px;
+      color: var(--gold-light);
+      font-family: 'Noto Serif JP', serif;
+      font-size: 14px;
+      letter-spacing: 2px;
+      padding: 11px 28px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 4px;
+    }
+    .form-submit:hover {
+      background: rgba(201,168,76,0.15);
+      box-shadow: 0 0 12px rgba(201,168,76,0.2);
+    }
+    .form-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+    .form-success {
+      background: #f0f8e8;
+      border: 1px solid #A8C878;
+      border-radius: 2px;
+      padding: 16px 20px;
+      text-align: center;
+      color: #3A6020;
+      font-size: 14px;
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+      display: none;
+    }
+    .form-error-global {
+      background: #fdf0f0;
+      border: 1px solid #D8A0A0;
+      border-radius: 2px;
+      padding: 12px 16px;
+      color: var(--red);
+      font-size: 13px;
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      .link-grid { grid-template-columns: 1fr; }
+      nav a { font-size: 12px; padding: 5px 12px; }
+      .spec-table th { width: 80px; font-size: 9px; }
+      .form-card { padding: 18px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-crest">🛡️</div>
+  <h1>About</h1>
+  <p class="subtitle">勇者の手記 — このサイトについて</p>
+  <div class="deco-line"><span>✦</span></div>
+  <nav>
+    <a href="index.html">HOME</a>
+    <a href="blog.html">BLOG</a>
+    <a href="gallery.html">GALLERY</a>
+    <a href="about.html" class="active">ABOUT</a>
+  </nav>
+</header>
+
+<div class="parchment-wrap">
+  <div class="container">
+
+    <!-- ── ABOUT ── -->
+    <div class="section-block">
+      <div class="section-header">
+        <span>🛡️</span>
+        <h2>About This Site</h2>
+        <div class="section-rule"></div>
+      </div>
+
+      <div class="about-card">
+        <div class="site-title-row">
+          <span class="site-icon">🗡️</span>
+          <div class="site-name-block">
+            <div class="site-name">勇者の手記</div>
+            <div class="site-name-sub">Dragon Quest Fan Log</div>
+          </div>
+        </div>
+
+        <p class="about-desc">
+          ドラゴンクエストのファンサイトです。<br>
+          攻略情報とかじゃなくて、「このBGMやばい」「このセリフ10年経っても忘れられない」「なんかよく分からないけど好き」を大事にしてます。<br>
+          ファンアートや漫画も置いてます。好きを詰め込む場所として作りました。
+        </p>
+
+        <table class="spec-table">
+          <tr>
+            <th>サイト名</th>
+            <td>勇者の手記</td>
+          </tr>
+          <tr>
+            <th>内容</th>
+            <td>
+              <span class="spec-tag">ファンアート</span>
+              <span class="spec-tag">漫画</span>
+              <span class="spec-tag">ブログ</span>
+              <span class="spec-tag">考察</span>
+              <span class="spec-tag">BGM語り</span>
+            </td>
+          </tr>
+          <tr>
+            <th>好きな作品</th>
+            <td>DQ3 / DQ5 / DQ11 （全シリーズ好き）</td>
+          </tr>
+          <tr>
+            <th>更新頻度</th>
+            <td>ゆっくり更新</td>
+          </tr>
+          <tr>
+            <th>一言</th>
+            <td>正しい解釈よりも「好き」を優先します。</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── 注意事項 ── -->
+    <div class="section-block">
+      <div class="section-header">
+        <span>📜</span>
+        <h2>Notice</h2>
+        <div class="section-rule"></div>
+      </div>
+
+      <div class="notice-box">
+        <strong>⚠ ご注意</strong>
+        当サイトに掲載されているイラスト・漫画・文章について、AI学習への利用、トレース、無断転載・二次利用を禁止します。<br>
+        このサイトはファンサイトです。ドラゴンクエストはスクウェア・エニックスの著作物です。
+      </div>
+    </div>
+
+    <!-- ── LINKS ── -->
+    <div class="section-block">
+      <div class="section-header">
+        <span>🔗</span>
+        <h2>Links</h2>
+        <div class="section-rule"></div>
+      </div>
+
+      <!-- 漫画・イラスト -->
+      <div style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:3px;color:#9A8050;text-transform:uppercase;margin-bottom:10px;">漫画・イラスト掲載サイト</div>
+      <div class="link-grid" style="margin-bottom:20px;">
+
+        <a class="link-card" href="https://rookie.shonenjump.com/users/14728546961183734555" target="_blank" rel="noopener">
+          <div class="link-icon">📚</div>
+          <div class="link-text">
+            <span class="link-name">ジャンプルーキー</span>
+            <span class="link-desc">オリジナル漫画を掲載中</span>
+          </div>
+          <span class="link-arrow">›</span>
+        </a>
+
+        <a class="link-card" href="https://daysneo.com/author/Sam333333Sam/" target="_blank" rel="noopener">
+          <div class="link-icon">🌙</div>
+          <div class="link-text">
+            <span class="link-name">DaysNEO</span>
+            <span class="link-desc">漫画掲載サイト</span>
+          </div>
+          <span class="link-arrow">›</span>
+        </a>
+
+        <a class="link-card" href="https://www.pixiv.net/users/105728284" target="_blank" rel="noopener">
+          <div class="link-icon">🎨</div>
+          <div class="link-text">
+            <span class="link-name">Pixiv</span>
+            <span class="link-desc">二次創作はこちらに掲載</span>
+          </div>
+          <span class="link-arrow">›</span>
+        </a>
+
+      </div>
+
+      <!-- SNS -->
+      <div style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:3px;color:#9A8050;text-transform:uppercase;margin-bottom:10px;">SNS・その他</div>
+      <div class="link-grid" style="margin-bottom:20px;">
+
+        <a class="link-card" href="https://bsky.app/profile/azaleaazalea88.bsky.social" target="_blank" rel="noopener">
+          <div class="link-icon">🦋</div>
+          <div class="link-text">
+            <span class="link-name">Bluesky</span>
+            <span class="link-desc">近況・作品のお知らせ</span>
+          </div>
+          <span class="link-arrow">›</span>
+        </a>
+
+        <a class="link-card" href="https://kakuyomu.jp/users/azalea_azalea72" target="_blank" rel="noopener">
+          <div class="link-icon">✒️</div>
+          <div class="link-text">
+            <span class="link-name">カクヨム</span>
+            <span class="link-desc">小説を掲載中</span>
+          </div>
+          <span class="link-arrow">›</span>
+        </a>
+
+        <a class="link-card" href="https://www.youtube.com/@LilyPopins0512" target="_blank" rel="noopener">
+          <div class="link-icon">🎬</div>
+          <div class="link-text">
+            <span class="link-name">YouTube（リリポピ）</span>
+            <span class="link-desc">動画チャンネル</span>
+          </div>
+          <span class="link-arrow">›</span>
+        </a>
+
+        <a class="link-card" href="https://lilipopi.github.io/lilypopins/" target="_blank" rel="noopener">
+          <div class="link-icon">🌸</div>
+          <div class="link-text">
+            <span class="link-name">リリポピのホームページ</span>
+            <span class="link-desc">別サイト</span>
+          </div>
+          <span class="link-arrow">›</span>
+        </a>
+
+      </div>
+
+      <!-- その他ホームページ -->
+      <div style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:3px;color:#9A8050;text-transform:uppercase;margin-bottom:10px;">その他のホームページ</div>
+      <div class="link-grid">
+
+        <a class="link-card" href="https://azaleacreativeroom888.github.io/storyreviewazalea/" target="_blank" rel="noopener">
+          <div class="link-icon">📖</div>
+          <div class="link-text">
+            <span class="link-name">書評サイト</span>
+            <span class="link-desc">本・アニメ・映画・ゲームの備忘録</span>
+          </div>
+          <span class="link-arrow">›</span>
+        </a>
+
+        <a class="link-card" href="https://azaleacreativeroom888.github.io/fan-english/" target="_blank" rel="noopener">
+          <div class="link-icon">🍔</div>
+          <div class="link-text">
+            <span class="link-name">英語サイト</span>
+            <span class="link-desc">英語学習者向けサイト</span>
+          </div>
+          <span class="link-arrow">›</span>
+        </a>
+
+        <a class="link-card" href="https://azaleacreativeroom888.github.io/fan-watercolor/" target="_blank" rel="noopener">
+          <div class="link-icon">☁️</div>
+          <div class="link-text">
+            <span class="link-name">水彩画サイト</span>
+            <span class="link-desc">水彩画掲載</span>
+          </div>
+          <span class="link-arrow">›</span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- ── CONTACT ── -->
+    <div class="section-block">
+      <div class="section-header">
+        <span>📮</span>
+        <h2>Contact</h2>
+        <div class="section-rule"></div>
+      </div>
+
+      <div class="form-card">
+        <p class="form-intro">
+          ご質問・ご感想などはこちらからどうぞ。<br>
+          Gmailで受け取り、返信いたします。
+        </p>
+
+        <div class="form-success" id="form-success">
+          ✦ メッセージを送信しました。ありがとうございます！
+        </div>
+        <div class="form-error-global" id="form-error">
+          送信に失敗しました。時間をおいて再度お試しください。
+        </div>
+
+        <form id="contact-form" action="https://formspree.io/f/maqvpvoz" method="POST">
+
+          <div class="form-group">
+            <label class="form-label" for="name">お名前</label>
+            <input class="form-input" type="text" id="name" name="name" placeholder="勇者の名前" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="email">メールアドレス <span class="required">*</span></label>
+            <input class="form-input" type="email" id="email" name="email" placeholder="example@gmail.com" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="message">メッセージ <span class="required">*</span></label>
+            <textarea class="form-textarea" id="message" name="message" placeholder="メッセージを入力してください…" rows="6" required></textarea>
+          </div>
+
+          <button class="form-submit" type="submit" id="submit-btn">
+            📮 送信する
+          </button>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-crest">🛡️</div>
+  <p>© 勇者の手記 — Fan Log / Non-official</p>
+  <p class="footer-notice">
+    当サイトに掲載されている画像・文章・作品について、AI学習への利用、トレース、無断転載・二次利用を禁止します。<br>
+    このサイトはドラゴンクエストの非公式ファンサイトです。
+  </p>
+</footer>
+
+<script>
+  const form = document.getElementById('contact-form');
+  const btn  = document.getElementById('submit-btn');
+  const successBox = document.getElementById('form-success');
+  const errorBox   = document.getElementById('form-error');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    btn.disabled = true;
+    btn.textContent = '送信中…';
+    successBox.style.display = 'none';
+    errorBox.style.display   = 'none';
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        successBox.style.display = 'block';
+        form.reset();
+      } else {
+        errorBox.style.display = 'block';
+      }
+    } catch {
+      errorBox.style.display = 'block';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '📮 送信する';
+    }
+  });
+</script>
+</body>
+</html>
